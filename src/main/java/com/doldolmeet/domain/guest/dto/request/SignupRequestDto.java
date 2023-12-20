@@ -19,6 +19,8 @@ public class SignupRequestDto {
 
     private Role role = Role.FAN;
 
-    private String stageName;
+    private String nickname;
     private String teamName;
+    private String profileImgUrl;
+    private String thumbNailImgUrl;
 }

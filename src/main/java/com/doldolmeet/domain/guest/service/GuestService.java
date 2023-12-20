@@ -47,6 +47,9 @@ public class GuestService {
         UserCommons userCommons = UserCommons.builder()
                 .username(username)
                 .password(password)
+                .nickname(requestDto.getNickname())
+                .profileImgUrl(requestDto.getProfileImgUrl())
+                .thumbNailImgUrl(requestDto.getThumbNailImgUrl())
                 .role(requestDto.getRole())
                 .build();
 
@@ -62,7 +65,6 @@ public class GuestService {
         else if (requestDto.getRole().equals(Role.IDOL)) {
             Idol idol = Idol.builder()
                             .userCommons(userCommons)
-                            .stageName(requestDto.getStageName())
                             .build();
 
             Optional<Team> team = teamRepository.findByTeamName(requestDto.getTeamName());
@@ -70,7 +72,8 @@ public class GuestService {
             if (!team.isPresent()) {
                 throw new CustomException(TEAM_NOT_FOUND);
             }
-
+            idol.createTeleRoomId();
+            idol.createWaitRoomId();
             idol.setTeam(team.get());
             idolRepository.save(idol);
         }
@@ -129,7 +132,7 @@ public class GuestService {
                 throw new CustomException(INVALID_PASSWORD);
             }
 
-            jwtToken = jwtUtil.createToken(username, fan.get().getUserCommons().getRole());
+            jwtToken = jwtUtil.createToken(username, fan.get().getUserCommons().getRole(), fan.get().getUserCommons().getNickname(), fan.get().getUserCommons().getProfileImgUrl(), fan.get().getUserCommons().getThumbNailImgUrl());
         }
 
         else if (idol.isPresent()) {
@@ -137,7 +140,7 @@ public class GuestService {
                 throw new CustomException(INVALID_PASSWORD);
             }
 
-            jwtToken = jwtUtil.createToken(username, idol.get().getUserCommons().getRole());
+            jwtToken = jwtUtil.createToken(username, idol.get().getUserCommons().getRole(), idol.get().getUserCommons().getNickname(), idol.get().getUserCommons().getProfileImgUrl(), idol.get().getUserCommons().getThumbNailImgUrl());
         }
 
         else if (admin.isPresent()) {
@@ -145,7 +148,7 @@ public class GuestService {
                 throw new CustomException(INVALID_PASSWORD);
             }
 
-            jwtToken = jwtUtil.createToken(username, admin.get().getUserCommons().getRole());
+            jwtToken = jwtUtil.createToken(username, admin.get().getUserCommons().getRole(), admin.get().getUserCommons().getNickname(), admin.get().getUserCommons().getProfileImgUrl(), admin.get().getUserCommons().getThumbNailImgUrl());
         }
 
         else {

@@ -4,6 +4,7 @@ import com.doldolmeet.domain.team.dto.request.AddIdolToTeamRequestDto;
 import com.doldolmeet.domain.team.dto.request.CreateTeamRequestDto;
 import com.doldolmeet.domain.team.service.TeamService;
 import com.doldolmeet.utils.Message;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@ApiResponse
 public class TeamController {
     private final TeamService teamService;
 

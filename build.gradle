@@ -57,10 +57,22 @@ dependencies {
     implementation 'org.webjars.bower:bootstrap:4.3.1'
     implementation 'org.webjars.bower:vue:2.5.16'
     implementation 'org.webjars.bower:axios:0.17.1'
-    implementation 'com.google.code.gson:gson:2.8.0'
+//    implementation 'com.google.code.gson:gson:2.8.0'
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // aws s3
+    implementation "com.amazonaws:aws-java-sdk-s3:1.12.281"
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+ // java9 부터 jaxb사용이 불가능해지고 모듈시스템이 추가되어서 추가한 디펜던시
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    //recording을 위해 추가
+    implementation 'io.openvidu:openvidu-java-client:2.29.0'
+
+
+
 }
 
 tasks.named('bootBuildImage') {

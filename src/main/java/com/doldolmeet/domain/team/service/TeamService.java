@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,7 +32,13 @@ public class TeamService {
     private Claims claims;
 
 
+    @Transactional
     public ResponseEntity<Message> createTeam(CreateTeamRequestDto requestDto, HttpServletRequest request) {
+        teamRepository.findByTeamName(requestDto.getTeamName())
+                .ifPresent(team -> {
+                    throw new CustomException(TEAM_ALREADY_EXIST);
+                });
+
         claims = jwtUtil.getClaims(request);
         userUtils.checkIfAdmin(claims);
         userUtils.checkIfUserExist(claims);
@@ -42,6 +49,7 @@ public class TeamService {
         return new ResponseEntity<>(new Message("팀 생성 성공", null), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<Message> addIdoToTeam(AddIdolToTeamRequestDto requestDto, HttpServletRequest request) {
         claims = jwtUtil.getClaims(request);
         userUtils.checkIfAdmin(claims);

@@ -1,13 +1,16 @@
 package com.doldolmeet.domain.fanMeeting.entity;
 
+import com.doldolmeet.domain.memo.entity.Memo;
 import com.doldolmeet.domain.users.fan.entity.Fan;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity(name = "fan_to_fan_meeting")
+@Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class FanToFanMeeting {
@@ -31,8 +34,19 @@ public class FanToFanMeeting {
     @Enumerated(value = EnumType.STRING)
     private FanMeetingApplyStatus fanMeetingApplyStatus;
 
+    @Column(nullable = false)
+    private Long orderNumber;
+
+    @Column(nullable = false)
+    private String chatRoomId;
+
+    @Column
+    private Long gameScore;
+
     public void setUserAndFanMeeting(Fan fan, FanMeeting fanMeeting) {
         this.fan = fan;
         this.fanMeeting = fanMeeting;
     }
+
+
 }

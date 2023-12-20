@@ -39,11 +39,36 @@ public enum ErrorCode {
     USER_MISMATCH_ERROR(HttpStatus.BAD_REQUEST, "사용자와 해당 메세지의 발신자 혹은 수신자가 일치하지 않습니다."),
     TEAM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 팀을 찾을 수 없습니다."),
     IDOL_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 아이돌을 찾을 수 없습니다."),
+    FANMEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 팬미팅을  찾을 수 없습니다."),
+    FANMEETING_NOT_APPLIED(HttpStatus.NOT_FOUND, "팬미팅이 승인되지 않았습니다."),
+    WAITROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 대기방을 찾을 수 없습니다."),
     //인증
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "인증에 실패했습니다."),
 
     //serverError
-    INTERNAL_SERER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR");
+    INTERNAL_SERER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR"),
+    WAITROOM_FAN_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 대기방에 팬이 없습니다."),
+    FAN_TO_FANMEETING_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 팬미팅에 팬이 없습니다."),
+    WAITROOMFAN_NOT_FOUND(HttpStatus.NOT_FOUND, "팬미팅 입장 안했습니다."),
+    IDOL_NOT_IN_FANMEETING(HttpStatus.NOT_FOUND, "해당 아이돌은 팬미팅에 참여할 수 없습니다."),
+    WAITROOMFAN_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "팬이 이미 대기방에서 기다리고 있습니다."),
+    TEAM_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 존재하는 팀입니다."),
+    TELE_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 텔레그램 방을 찾을 수 없습니다."),
+    TELE_ROOMFAN_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 화상방에 TeleRoomFan이 없습니다."),
+    FAN_NOT_IN_ROOM(HttpStatus.NOT_FOUND, "해당 팬미팅에 팬이 없습니다."),
+    TELEROOMFAN_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "해당 화상방에 이미 같은 팬이 존재합니다."),
+    UNKNOWN_TYPE(HttpStatus.BAD_REQUEST, "알 수 없는 타입입니다."),
+    NOT_FOUND_FANTOFANMEETING(HttpStatus.NOT_FOUND, "해당 팬미팅을 신청하지 않은 팬입니다."),
+    NOT_FOUND_FANMEETING_ROOM_ORDER(HttpStatus.NOT_FOUND, "해당 세션ID를 가지는 방이 존재하지 않습니다."),
+    INVALID_IDOLROOM_STATE(HttpStatus.BAD_REQUEST, "아이돌 방의 상태가 유효하지 않습니다."),
+    SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 세션을 찾을 수 없습니다."),
+    INVALID_FANMEETING_END(HttpStatus.BAD_REQUEST, "대기방의 다음 방이 없습니다."),
+    SSE_NOT_SENT_FIRST_IDOL_WAIT_ROOM(HttpStatus.INTERNAL_SERVER_ERROR, "첫번째 아이돌 대기방으로 이동하는 SSE 이벤트를 보내지 못했습니다."),
+    SLEEP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Thread.sleep() 실패"),
+    INVALID_USER_TYPE(HttpStatus.BAD_REQUEST, "유저 타입이 유효하지 않습니다."),
+    EMITTER_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "SSE 이벤트를 보내지 못했습니다."),
+    THREAD_INTERRUPTED(HttpStatus.INTERNAL_SERVER_ERROR, "쓰레드 인터럽트되어 SLEEP 중단"),
+    FANMEETING_ROOMS_NOT_CREATED(HttpStatus.NOT_FOUND, "팬미팅 방이 생성되지 않았습니다.");
 
     private final HttpStatus httpStatus;
     private final String data;

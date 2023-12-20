@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>chunk file upload</title>
+</head>
+<body>
+
+<input id="video-file" type="file" name="file">
+<button onclick="sendVideoChunks()">업로드</button>
+<div id="result"></div>
+
+</body>
+<script>
+    const sendVideoChunks = async () => {
+        const chunkSize = 1024 * 1024; // 1MB
+        const file = document.getElementById("video-file").files[0];
+        const resultElement = document.getElementById("result");
+
+        const key = await getKey(file)
+
+        const totalChunks = Math.ceil(file.size / chunkSize);
+        let currentChunk = await getLastChunkNumber(key);
+
+        const sendNextChunk = () => {
+            const start = currentChunk * chunkSize;
+            const end = Math.min(start + chunkSize, file.size);
+
+            const chunk = file.slice(start, end);
+
+            const formData = new FormData();
+            formData.append("chunk", chunk, file.name);
+            formData.append("chunkNumber", currentChunk);
+            formData.append("totalChunks", totalChunks);
+
+            fetch("/chunk/upload/" + key, {
+                method: "POST",
+                body: formData
+            }).then(resp => {
+                if (resp.status === 206) {
+                    resultElement.textContent = Math.round(currentChunk / totalChunks * 100) + "%"
+                    currentChunk++;
+                    if (currentChunk < totalChunks) {
+                        sendNextChunk();
+                    }
+                } else if (resp.status === 200) {
+                    resp.text().then(data => resultElement.textContent = data);
+                }
+            }).catch(err => {
+                console.error("Error uploading video chunk");
+            });
+        };
+
+        sendNextChunk();
+    }
+
+    const getKey = (file) => {
+        // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+        const id = file.name + file.size + file.type;
+        const encoded_id = new TextEncoder().encode(id);
+
+        return crypto.subtle.digest('SHA-256', encoded_id)
+            .then(hash => {
+                return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const getLastChunkNumber = (key) => {
+        return fetch("/chunk/upload/" + key, {
+            method: "GET",
+        }).then(resp => resp.text()).then(data => data);
+    }
+</script>
+</html>
